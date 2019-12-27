@@ -1,6 +1,10 @@
 #!/usr/bin/env python3
 
-import asyncio, asyncssh, os, sys, subprocess
+import asyncio
+import asyncssh
+import os
+import subprocess
+import sys
 
 
 class MySFTPServer(asyncssh.SFTPServer):
@@ -47,10 +51,10 @@ async def handle_client(process):
 async def start_server(port):
     print("Starting server on port " + str(port) + "...")
     await asyncssh.listen('', port, server_host_keys=['ssh_host_key'],
-                          sftp_factory=MySFTPServer,
+                          #sftp_factory=MySFTPServer,
+                          #allow_scp=True,
                           server_factory=MySSHServer,
-                          process_factory=handle_client,
-                          allow_scp=False)
+                          process_factory=handle_client)
 
 loop = asyncio.get_event_loop()
 
