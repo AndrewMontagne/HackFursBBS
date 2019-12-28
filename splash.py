@@ -21,11 +21,15 @@ def exit_app(key):
 
 
 def handleRegistrationButton(button):
-    registerButton.original_widget.set_label(u'Registration Closed')
+    loop.widget = overlay
 
 
 def handleExitButton(button):
     raise urwid.ExitMainLoop()
+
+
+def handlePopupButton(button):
+    loop.widget = center
 
 palette = [
     ('banner', 'white', 'black'),
@@ -58,11 +62,21 @@ pile = urwid.Pile([logo, blank, subtext, blank, buttonPile])
 center = urwid.Filler(pile, valign='middle', height='pack')
 center = urwid.AttrMap(center, 'bg')
 
+popuptext = urwid.Text(('banner', u'Registration is currently closed,\nplease check back here later!'), align='center')
+popupbutton = urwid.Button('Okay', handlePopupButton)
+popupbutton = urwid.AttrMap(popupbutton, 'button', 'buttonf')
+popupbutton = urwid.Padding(popupbutton, 'center', 8)
+popuppile = urwid.Pile([blank, popuptext, blank, popupbutton, blank])
+
+overlay = urwid.Overlay(urwid.Filler(urwid.LineBox(popuppile), valign='middle', height='pack'), center,
+    align='center', width=40,
+    valign='middle', height=8)
+
 screen = simple_display()
 
 print(chr(27) + "[?1049h")
-urwid.MainLoop(center, palette, screen, unhandled_input=exit_app).run()
-print(chr(27) + "[2J")
+loop = urwid.MainLoop(center, palette, screen, unhandled_input=exit_app)
+loop.run()
 print(chr(27) + "[?1049l")
 
 
