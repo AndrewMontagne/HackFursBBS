@@ -1,3 +1,6 @@
+import urwid
+
+
 class BaseApplet:
 
     main_loop = None
@@ -29,6 +32,25 @@ class BaseApplet:
         if self.tick_count >= self.tick_rate:
             self.tick()
             self.tick_count = 0
+
+    def handle_alert_button(self, button):
+        self.change_widget(self.main_widget)
+
+    def alert(self, string):
+        if self.in_foreground is False:
+            return
+
+        blank = urwid.Divider()
+        popup_text = urwid.Text(('banner', string), align='center')
+        popup_button = urwid.Button('Okay', self.handle_alert_button)
+        popup_button = urwid.AttrMap(popup_button, 'button', 'buttonf')
+        popup_button = urwid.Padding(popup_button, 'center', 8)
+        popup_pile = urwid.Pile([blank, popup_text, blank, popup_button, blank])
+
+        overlay = urwid.Overlay(urwid.Filler(urwid.LineBox(popup_pile), valign='middle', height='pack'),
+                                self.main_widget, align='center', width=40, valign='middle', height=8)
+
+        self.main_loop.widget = overlay
 
     def tick(self):
         return

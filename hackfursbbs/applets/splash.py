@@ -12,13 +12,10 @@ def time_string():
 class SplashScreen(BaseApplet):
 
     def handle_registration_button(self, button):
-        self.change_widget(self.overlay)
+        self.alert(u'Registration is currently closed,\nplease check back in 2020!')
 
     def handle_exit_button(self, button):
         raise urwid.ExitMainLoop()
-
-    def handle_popup_button(self, button):
-        self.change_widget(self.center)
 
     def tick(self):
         self.subtext.set_text(('banner', time_string()))
@@ -60,16 +57,6 @@ class SplashScreen(BaseApplet):
 
         self.center = urwid.Filler(self.pile, valign='middle', height='pack')
         self.center = urwid.AttrMap(self.center, 'bg')
-
-        self.popuptext = urwid.Text(('banner', u'Registration is currently closed,\nplease check back in 2020!'),
-                                    align='center')
-        self.popupbutton = urwid.Button('Okay', self.handle_popup_button)
-        self.popupbutton = urwid.AttrMap(self.popupbutton, 'button', 'buttonf')
-        self.popupbutton = urwid.Padding(self.popupbutton, 'center', 8)
-        self.popuppile = urwid.Pile([self.blank, self.popuptext, self.blank, self.popupbutton, self.blank])
-
-        self.overlay = urwid.Overlay(urwid.Filler(urwid.LineBox(self.popuppile), valign='middle', height='pack'),
-                                     self.center, align='center', width=40, valign='middle', height=8)
 
         self.main_widget = self.center
 
