@@ -14,7 +14,7 @@ def tick(loop, user_data=None):
     # Rounding down then adding 1/10th of a second to prevent timer drift
     current_time = int(time.time() * 10) / 10.0
     loop.set_alarm_at(current_time + 0.1, tick)
-    loop.current_applet.every_tick()
+    loop.current_applet._every_tick()
 
 
 class AppLoop(urwid.MainLoop):

@@ -2,7 +2,7 @@
 
 import urwid
 from time import gmtime, strftime
-from .base_applet import BaseApplet
+from hackfursbbs.common.base_applet import BaseApplet
 
 
 def time_string():
