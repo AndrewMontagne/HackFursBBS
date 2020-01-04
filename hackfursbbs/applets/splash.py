@@ -3,6 +3,7 @@
 import urwid
 from time import gmtime, strftime
 from hackfursbbs.common.base_applet import BaseApplet
+from hackfursbbs.applets.register import Register
 
 
 def time_string():
@@ -12,7 +13,7 @@ def time_string():
 class SplashScreen(BaseApplet):
 
     def handle_registration_button(self, button):
-        self.alert(u'Registration is currently closed,\nplease check back in 2020!')
+        self.main_loop.launch_applet(Register())
 
     def handle_exit_button(self, button):
         raise urwid.ExitMainLoop()
@@ -25,24 +26,18 @@ class SplashScreen(BaseApplet):
         super().__init__()
 
         self.tick_rate = 10
-        self.applet_name = "# hack furs dot sh"
+        self.applet_name = "Welcome!"
 
         self.blank = urwid.Divider()
-        self.palette = [
-            ('banner', 'white', 'black'),
-            ('buttonf', 'black', 'white'),
-            ('button', 'black', 'dark gray'),
-            ('bg', 'black', 'black'),
-        ]
 
-        self.logo = urwid.Text(('banner', u''' ██╗ ██╗ ██╗  ██╗ █████╗  ██████╗██╗  ██╗███████╗██╗   ██╗██████╗ ███████╗
+        self.logo = urwid.Text( u''' ██╗ ██╗ ██╗  ██╗ █████╗  ██████╗██╗  ██╗███████╗██╗   ██╗██████╗ ███████╗
 ████████╗██║  ██║██╔══██╗██╔════╝██║ ██╔╝██╔════╝██║   ██║██╔══██╗██╔════╝
 ╚██╔═██╔╝███████║███████║██║     █████╔╝ █████╗  ██║   ██║██████╔╝███████╗
 ████████╗██╔══██║██╔══██║██║     ██╔═██╗ ██╔══╝  ██║   ██║██╔══██╗╚════██║
 ╚██╔═██╔╝██║  ██║██║  ██║╚██████╗██║  ██╗██║     ╚██████╔╝██║  ██║███████║
- ╚═╝ ╚═╝ ╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝╚═╝      ╚═════╝ ╚═╝  ╚═╝╚══════╝'''), align='center')
+ ╚═╝ ╚═╝ ╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝╚═╝      ╚═════╝ ╚═╝  ╚═╝╚══════╝''', align='center')
 
-        self.subtext = urwid.Text(('banner', time_string()), align='center')
+        self.subtext = urwid.Text(time_string(), align='center')
 
         self.registerButton = urwid.Button('Register', self.handle_registration_button)
         self.registerButton = urwid.AttrMap(self.registerButton, 'button', 'buttonf')

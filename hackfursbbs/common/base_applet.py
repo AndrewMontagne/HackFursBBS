@@ -9,13 +9,13 @@ class BaseApplet:
     tick_rate = 0
     tick_count = 0
     in_foreground = False
-    applet_name = "BBS Applet"
+    applet_name = ""
 
     def enter_foreground(self):
         """Called when the applet enters the foreground."""
         self.in_foreground = True
         self.change_widget(self.main_widget)
-        print("\x1b]2;" + self.applet_name + "\x07")
+        print("\x1b]2;hackfurs.sh: " + self.applet_name + "\x07")
         return
 
     def enter_background(self):
@@ -61,12 +61,12 @@ class BaseApplet:
 
         self.main_loop.widget = overlay
 
-    def start(self, _main_loop):
+    def start_applet(self, _main_loop):
         """Called when the application starts, but before it is in the foreground"""
         self.main_loop = _main_loop
         self.enter_foreground()
 
-    def exit(self):
+    def stop_applet(self):
         """Called when the application is about to exit"""
         self.main_loop = None
         self.main_widget = None

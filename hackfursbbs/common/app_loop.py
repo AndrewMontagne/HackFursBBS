@@ -6,8 +6,6 @@ import time
 def exit_app(key):
     if key == 'esc':
         raise urwid.ExitMainLoop()
-    else:
-        print(key)
 
 
 def tick(loop, user_data=None):
@@ -20,10 +18,10 @@ def tick(loop, user_data=None):
 class AppLoop(urwid.MainLoop):
 
     default_palette = [
-        ('banner', 'white', 'black'),
         ('buttonf', 'black', 'white'),
         ('button', 'black', 'dark gray'),
-        ('bg', 'black', 'black'),
+        ('input', 'white', 'dark gray'),
+        ('inputf', 'black', 'light gray'),
     ]
 
     def __init__(self, _default_applet, username=None):
@@ -32,7 +30,12 @@ class AppLoop(urwid.MainLoop):
 
     def run(self):
         print("\x1b[?1049h")
-        self.current_applet.start(self)
+        self.current_applet.start_applet(self)
         self.set_alarm_in(0.1, tick)
         super().run()
         print("\x1b[?1049l")
+
+    def launch_applet(self, _new_applet):
+        self.current_applet.stop_applet()
+        self.current_applet = _new_applet
+        self.current_applet.start_applet(self)
