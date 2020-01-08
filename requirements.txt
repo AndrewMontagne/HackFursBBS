@@ -1,2 +1,5 @@
+sqlobject
+pyotp
+pymysql
 urwid
 asyncssh

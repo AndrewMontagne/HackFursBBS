@@ -1,8 +1,19 @@
-import asyncio
 import asyncssh
 import os
-import subprocess
 import sys
+import pyotp
+import pymysql
+
+from hackfursbbs.database.users import User
+from hackfursbbs.database.pubkey import Pubkey
+
+
+def get_user(username):
+    users = list(User.select(User.q.username == username))
+    if len(users) == 1:
+        return users[0]
+    else:
+        return None
 
 
 class MySFTPServer(asyncssh.SFTPServer):
@@ -24,4 +35,26 @@ class MySSHServer(asyncssh.SSHServer):
             print('SSH connection closed.')
 
     def begin_auth(self, username):
-        return False  # user does not require auth to connect
+        return username != "anonymous"  # user does not require auth to connect
+
+    def validate_public_key(self, username, key):
+        print(username + ' ' + key.get_algorithm() + ' ' + key.get_fingerprint())
+        user = get_user(username)
+        for pubkey in user.pubkeys:
+            if pubkey.fingerprint == key.get_fingerprint() and pubkey.type == key.get_algorithm():
+                return True
+        return False
+
+    def public_key_auth_supported(self):
+        return True
+
+    def password_auth_supported(self):
+        return True
+
+    def validate_password(self, username, password):
+        user = get_user(username)
+        if user:
+            totp = pyotp.TOTP(user.totp_secret)
+            return totp.verify(password)
+        else:
+            return False

@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
-import asyncssh, asyncio, sys, subprocess
+import asyncssh, asyncio, sys, subprocess, pymysql
+from sqlobject import *
 from hackfursbbs.common.server import MySSHServer
 
 
@@ -27,6 +28,8 @@ async def start_server(port_number):
     await asyncssh.listen('', port, server_host_keys=['ssh_host_key'],
                           server_factory=MySSHServer,
                           process_factory=handle_client)
+
+sqlhub.processConnection = connectionForURI('mysql://hackfursbbs:password@127.0.0.1/hackfursbbs?driver=pymysql')
 
 loop = asyncio.get_event_loop()
 
