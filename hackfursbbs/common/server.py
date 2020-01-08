@@ -2,14 +2,12 @@ import asyncssh
 import os
 import sys
 import pyotp
-import pymysql
 
-from hackfursbbs.database.users import User
-from hackfursbbs.database.pubkey import Pubkey
+from hackfursbbs.database import *
 
 
 def get_user(username):
-    users = list(User.select(User.q.username == username))
+    users = list(User.select(User.q.username == username).limit(1))
     if len(users) == 1:
         return users[0]
     else:
@@ -40,6 +38,9 @@ class MySSHServer(asyncssh.SSHServer):
     def validate_public_key(self, username, key):
         print(username + ' ' + key.get_algorithm() + ' ' + key.get_fingerprint())
         user = get_user(username)
+        if user is None:
+            return False
+
         for pubkey in user.pubkeys:
             if pubkey.fingerprint == key.get_fingerprint() and pubkey.type == key.get_algorithm():
                 return True
@@ -58,3 +59,6 @@ class MySSHServer(asyncssh.SSHServer):
             return totp.verify(password)
         else:
             return False
+
+    def kbdint_auth_supported(self):
+        return False
