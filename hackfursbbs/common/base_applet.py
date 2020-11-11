@@ -44,7 +44,7 @@ class BaseApplet:
     def _handle_alert_button(self, button):
         self.change_widget(self.main_widget)
 
-    def alert(self, string):
+    def alert(self, string, height=14):
         """Overlays the active widget with an alert box"""
         if self.in_foreground is False:
             return
@@ -53,11 +53,11 @@ class BaseApplet:
         popup_text = urwid.Text(('banner', string), align='center')
         popup_button = urwid.Button('Okay', self._handle_alert_button)
         popup_button = urwid.AttrMap(popup_button, 'button', 'buttonf')
-        popup_button = urwid.Padding(popup_button, 'center', 8)
+        popup_button = urwid.Padding(popup_button, 'center', height)
         popup_pile = urwid.Pile([blank, popup_text, blank, popup_button, blank])
 
         overlay = urwid.Overlay(urwid.Filler(urwid.LineBox(popup_pile), valign='middle', height='pack'),
-                                self.main_widget, align='center', width=40, valign='middle', height=8)
+                                self.main_widget, align='center', width=40, valign='middle', height=height)
 
         self.main_loop.widget = overlay
 

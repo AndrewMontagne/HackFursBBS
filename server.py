@@ -14,7 +14,7 @@ async def handle_client(process):
     env['SHELL'] = '/bin/bash'
     env['USER'] = 'andrew'
 
-    bc_proc = subprocess.Popen(['python3', 'applet.py'], shell=False, stdin=subprocess.PIPE, stdout=subprocess.PIPE,
+    bc_proc = subprocess.Popen(['sudo -E -u andrew python3 applet.py'], shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE,
                                env=env, start_new_session=True, encoding=None)
 
     await process.redirect(stdin=bc_proc.stdin, stdout=bc_proc.stdout)

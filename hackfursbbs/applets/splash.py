@@ -1,13 +1,21 @@
 #!/usr/bin/env python
 
-import urwid
-from time import gmtime, strftime
+import urwid, math
+import time
 from hackfursbbs.common.base_applet import BaseApplet
 from hackfursbbs.applets.register import Register
 
 
 def time_string():
-    return strftime("%Y-%m-%d %H:%M:%S", gmtime())
+    march_num = math.floor(int((time.time() - 1583020800)) / 86400)
+    march_suffix = 'th'
+    if march_num % 10 == 1:
+        march_suffix = 'st'
+    elif march_num % 10 == 2:
+        march_suffix = 'nd'
+    elif march_num % 10 == 3:
+        march_suffix = 'rd'
+    return 'March ' + str(march_num) + march_suffix + ' 2020 ' + time.strftime("%H:%M:%S", time.gmtime())
 
 
 class SplashScreen(BaseApplet):

@@ -3,8 +3,6 @@ import os
 import sys
 import pyotp
 
-from hackfursbbs.database import *
-
 
 def get_user(username):
     users = list(User.select(User.q.username == username).limit(1))
