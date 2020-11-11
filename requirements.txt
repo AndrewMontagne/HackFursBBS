@@ -1,5 +1,4 @@
-sqlobject
 pyotp
-pymysql
 urwid
 asyncssh
+peewee
