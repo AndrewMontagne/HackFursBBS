@@ -3,5 +3,5 @@ from peewee import *
 from . import Base
 
 class User(Base):
-    id = IntegerField()
-    username = CharField()
+    username = CharField(16, unique=True, null=False)
+    authkeys_url = TextField()

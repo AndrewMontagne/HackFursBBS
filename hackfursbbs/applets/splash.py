@@ -7,7 +7,7 @@ from hackfursbbs.applets.register import Register
 
 
 def time_string():
-    march_num = math.floor(int((time.time() - 1583020800)) / 86400)
+    march_num = math.floor(int((time.time() - 1582934400)) / 86400)
     march_suffix = 'th'
     if march_num % 10 == 1:
         march_suffix = 'st'
@@ -15,7 +15,7 @@ def time_string():
         march_suffix = 'nd'
     elif march_num % 10 == 3:
         march_suffix = 'rd'
-    return 'March ' + str(march_num) + march_suffix + ' 2020 ' + time.strftime("%H:%M:%S", time.gmtime())
+    return 'March ' + str(march_num) + march_suffix + ' 2020  ' + time.strftime("%H:%M:%S", time.gmtime())
 
 
 class SplashScreen(BaseApplet):
