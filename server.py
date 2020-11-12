@@ -12,9 +12,9 @@ async def handle_client(process):
     env['COLUMNS'] = str(process.get_terminal_size()[0])
     env['LINES'] = str(process.get_terminal_size()[1])
     env['SHELL'] = '/bin/bash'
-    env['USER'] = 'andrew'
+    env['USER'] = 'bbs'
 
-    bc_proc = subprocess.Popen(['sudo -E -u andrew python3 applet.py'], shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE,
+    bc_proc = subprocess.Popen(['sudo -E -u bbs python3 /app/bootstrap.py'], shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE,
                                env=env, start_new_session=True, encoding=None)
 
     await process.redirect(stdin=bc_proc.stdin, stdout=bc_proc.stdout)
@@ -24,7 +24,7 @@ async def handle_client(process):
 
 async def start_server(port_number):
     print("Starting server on port " + str(port_number) + "...")
-    await asyncssh.listen('', port, server_host_keys=['ssh_host_key'],
+    await asyncssh.listen('', port, server_host_keys=['/app/ssh_host_key'],
                           server_factory=MySSHServer,
                           process_factory=handle_client)
 

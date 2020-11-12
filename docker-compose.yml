@@ -1,0 +1,23 @@
+version: "3.3"
+services:
+  mysql:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'db'
+      MYSQL_USER: 'hackfursbbs'
+      MYSQL_PASSWORD: 'password'
+      MYSQL_ROOT_PASSWORD: 'password'
+    ports:
+      - '3307:3306'
+    expose:
+      - '3306'
+    volumes:
+      - /var/lib/mysql
+  bbs:
+    image: andrewmontagne/hackfursbbs
+    volumes:
+      - ./:/app
+    ports:
+      - '2022:2022'
+    entrypoint: '/app/server.py'

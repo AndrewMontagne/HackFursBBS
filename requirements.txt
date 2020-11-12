@@ -2,3 +2,4 @@ pyotp
 urwid
 asyncssh
 peewee
+pymysql
